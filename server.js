@@ -6,11 +6,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(bodyParser.json());
-console.log("Server.js start");
+
 app.post('/login', (req, res) => {
     const code = req.body.code
     const sportifyApi = new SportifyWebApi({
-        redirectUri: 'http://localhost:3000',
+        redirectUri: 'https://spotify-client-react.web.app',
         clientId: 'ff076a0d549947e0a6e78532e2204bea',
         clientSecret: 'c4e0c7f1100f45d3919090e270e4f634'
     })
@@ -28,20 +28,20 @@ app.post('/login', (req, res) => {
             res.sendStatus(400)
         })
 })
+
 app.post('/refresh', (req, res) => {
     const refreshToken = req.body.refreshToken
     const sportifyApi = new SportifyWebApi({
-        redirectUri: 'http://localhost:3000',
+        redirectUri: 'https://spotify-client-react.web.app',
         clientId: 'ff076a0d549947e0a6e78532e2204bea',
         clientSecret: 'c4e0c7f1100f45d3919090e270e4f634',
         refreshToken
     })
     sportifyApi.refreshAccessToken()
-        .then(
-            (data) => {
-                console.log('The Access Token has been refreshed');
-                sportifyApi.setAccessToken(data.body.access_token)
-            }
+        .then(data => {
+            console.log('The Access Token has been refreshed');
+            sportifyApi.setAccessToken(data.body.access_token)
+        }
         )
         .catch(err => {
             res.sendStatus(400)
