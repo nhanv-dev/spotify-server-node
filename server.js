@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const SportifyWebApi = require('spotify-web-api-node');
 const app = express();
+const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(bodyParser.json());
 console.log("Server.js start");
@@ -47,4 +48,4 @@ app.post('/refresh', (req, res) => {
         })
 
 })
-app.listen(3001)
+app.listen(port)
