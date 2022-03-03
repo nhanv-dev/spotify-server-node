@@ -3,16 +3,18 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const SportifyWebApi = require('spotify-web-api-node');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.use(cors())
 app.use(bodyParser.json());
 app.post('/login', (req, res) => {
     const code = req.body.code
     const redirectUri = req.body.redirect_uri
+    const clientId = req.body.client_id
+    const clientSecret = req.body.client_secret
     const sportifyApi = new SportifyWebApi({
         redirectUri: redirectUri || 'https://spotify-client-react.web.app',
-        clientId: 'ff076a0d549947e0a6e78532e2204bea',
-        clientSecret: 'c4e0c7f1100f45d3919090e270e4f634'
+        clientId: clientId || 'e5f1e8d99a20479faec1c18935946c77',
+        clientSecret: clientSecret || '8cec09eba3684069ad228b05464818cb'
     })
     sportifyApi.authorizationCodeGrant(code)
         .then(data => {
@@ -32,10 +34,12 @@ app.post('/login', (req, res) => {
 app.post('/refresh', (req, res) => {
     const refreshToken = req.body.refreshToken
     const redirectUri = req.body.redirect_uri
+    const clientId = req.body.client_id
+    const clientSecret = req.body.client_secret
     const sportifyApi = new SportifyWebApi({
         redirectUri: redirectUri || 'https://spotify-client-react.web.app',
-        clientId: 'ff076a0d549947e0a6e78532e2204bea',
-        clientSecret: 'c4e0c7f1100f45d3919090e270e4f634',
+        clientId: clientId || 'e5f1e8d99a20479faec1c18935946c77',
+        clientSecret: clientSecret || '8cec09eba3684069ad228b05464818cb',
         refreshToken
     })
     sportifyApi.refreshAccessToken()
