@@ -13,8 +13,8 @@ app.post('/login', (req, res) => {
     const clientSecret = req.body.client_secret
     const sportifyApi = new SportifyWebApi({
         redirectUri: redirectUri || 'https://spotify-client-react.web.app',
-        clientId: clientId || 'e5f1e8d99a20479faec1c18935946c77',
-        clientSecret: clientSecret || '8cec09eba3684069ad228b05464818cb'
+        clientId: clientId || '96495a496bd743b28aeb95759eb85197',
+        clientSecret: clientSecret || '8115c685b0134817b900e0a0de979952'
     })
     sportifyApi.authorizationCodeGrant(code)
         .then(data => {
@@ -38,16 +38,20 @@ app.post('/refresh', (req, res) => {
     const clientSecret = req.body.client_secret
     const sportifyApi = new SportifyWebApi({
         redirectUri: redirectUri || 'https://spotify-client-react.web.app',
-        clientId: clientId || 'e5f1e8d99a20479faec1c18935946c77',
-        clientSecret: clientSecret || '8cec09eba3684069ad228b05464818cb',
+        clientId: clientId || '96495a496bd743b28aeb95759eb85197',
+        clientSecret: clientSecret || '8115c685b0134817b900e0a0de979952',
         refreshToken
     })
     sportifyApi.refreshAccessToken()
         .then(data => {
             console.log('The Access Token has been refreshed');
             sportifyApi.setAccessToken(data.body.access_token)
-        }
-        )
+            res.json({
+                accessToken: data.body.access_token,
+                refreshToken: data.body.refresh_token,
+                expiresIn: data.body.expires_in
+            })
+        })
         .catch(err => {
             res.sendStatus(400)
         })
